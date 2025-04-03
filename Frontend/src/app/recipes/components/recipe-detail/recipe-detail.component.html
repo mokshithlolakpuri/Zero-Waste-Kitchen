@@ -1,0 +1,45 @@
+<div class="recipe-detail-container">
+  <button mat-button (click)="goBack()" class="back-button">
+    <mat-icon>arrow_back</mat-icon> Back to Recipes
+  </button>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+
+  <div *ngIf="recipe && !isLoading" class="recipe-content">
+    <div class="recipe-header">
+      <h1>{{ recipe.title }}</h1>
+      <div class="recipe-meta">
+        <span><mat-icon>schedule</mat-icon> {{ recipe.prep_time + recipe.cook_time }} min</span>
+        <span><mat-icon>restaurant</mat-icon> {{ recipe.servings }} servings</span>
+        <span><mat-icon>public</mat-icon> {{ recipe.cuisine }}</span>
+        <span><mat-icon>speed</mat-icon> {{ recipe.difficulty }}</span>
+      </div>
+    </div>
+
+    <div class="recipe-sections">
+      <mat-card class="ingredients-card">
+        <mat-card-header>
+          <mat-card-title>Ingredients</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let ingredient of recipe.ingredients.split('\n')">
+              {{ ingredient }}
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="instructions-card">
+        <mat-card-header>
+          <mat-card-title>Instructions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ol>
+            <li *ngFor="let step of recipe.instructions.split('\n')">{{ step }}</li>
+          </ol>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

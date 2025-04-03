@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Generate Recipes</h2>
+<mat-dialog-content>
+  <p>Generate recipes based on the groceries you currently have.</p>
+  
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Cuisine Preference</mat-label>
+    <mat-select [(ngModel)]="cuisine">
+      <mat-option *ngFor="let cuisine of cuisines" [value]="cuisine">
+        {{ cuisine }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="generateRecipes()"
+    [disabled]="isLoading"
+  >
+    <span *ngIf="!isLoading">Generate</span>
+    <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+  </button>
+</mat-dialog-actions>

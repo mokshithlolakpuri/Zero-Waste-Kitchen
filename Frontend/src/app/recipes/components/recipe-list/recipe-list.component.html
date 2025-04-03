@@ -1,0 +1,30 @@
+<div class="recipe-container">
+  <div class="header">
+    <h2>Your Recipes</h2>
+    <button mat-raised-button color="primary" (click)="openGenerateDialog()">
+      <mat-icon>auto_awesome</mat-icon>
+      Generate Recipes
+    </button>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+
+  <div *ngIf="!isLoading && recipes.length === 0" class="empty-state">
+    <mat-icon>restaurant_menu</mat-icon>
+    <p>No recipes yet. Generate some based on your groceries!</p>
+  </div>
+
+  <div class="recipe-grid">
+    <mat-card *ngFor="let recipe of recipes" [routerLink]="['/recipes', recipe.id]">
+      <mat-card-header>
+        <mat-card-title>{{ recipe.title }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ recipe.cuisine }} • {{ recipe.difficulty }} • {{ recipe.prep_time + recipe.cook_time }} min
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ recipe.ingredients.split('\n').slice(0, 3).join(' • ') }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
