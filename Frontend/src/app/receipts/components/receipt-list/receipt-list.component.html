@@ -1,0 +1,70 @@
+<!-- receipt-list.component.html -->
+<mat-toolbar color="primary">
+  <span>My Receipts</span>
+  <span class="spacer"></span>
+  <button mat-raised-button routerLink="/receipts/upload">
+    <mat-icon>add</mat-icon> Upload Receipt
+  </button>
+</mat-toolbar>
+
+<div class="container">
+  <div *ngIf="loading" class="loading-spinner">
+    <mat-spinner></mat-spinner>
+    <p>Loading receipts...</p>
+  </div>
+
+  <div *ngIf="!loading && error" class="error-message">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-button (click)="loadReceipts()">
+      <mat-icon>refresh</mat-icon> Retry
+    </button>
+  </div>
+
+  <div *ngIf="!loading && receipts.length === 0" class="empty-state">
+    <mat-icon class="empty-icon">receipt</mat-icon>
+    <h2>No receipts found</h2>
+    <p>Upload your first receipt to get started</p>
+    <button mat-raised-button color="primary" routerLink="/receipts/upload">
+      <mat-icon>upload</mat-icon> Upload Receipt
+    </button>
+  </div>
+
+  <div class="receipt-grid">
+    <mat-card 
+      *ngFor="let receipt of receipts" 
+      class="receipt-card"
+      [routerLink]="['/receipts', receipt.id]">
+      
+      <mat-card-header>
+        <mat-card-title>{{ receipt.storeName || 'Unknown Store' }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ receipt.purchaseDate | date:'mediumDate' }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="receipt-meta">
+          <span class="meta-item">
+            <mat-icon>shopping_basket</mat-icon>
+            {{ getTotalItems(receipt) }} items
+          </span>
+          <span *ngIf="receipt.totalAmount" class="meta-item">
+            <mat-icon>attach_money</mat-icon>
+            {{ receipt.totalAmount | currency }}
+          </span>
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions align="end">
+        <button 
+          mat-icon-button 
+          color="warn" 
+          (click)="deleteReceipt(receipt.id, $event)"
+          aria-label="Delete receipt">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+/* receipt-detail.component.css */
+.receipt-detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  gap: 16px;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #f44336;
+  padding: 16px;
+  background-color: rgba(244, 67, 54, 0.1);
+  border-radius: 4px;
+  margin: 16px 0;
+}
+
+.receipt-content {
+  margin-top: 16px;
+}
+
+.receipt-image {
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+
+.item-row {
+  height: auto !important;
+  padding: 8px 0;
+}
+
+.item-details {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+}
+
+.item-name {
+  flex: 2;
+}
+
+.item-quantity {
+  flex: 1;
+  color: #666;
+}
+
+.item-price {
+  font-weight: 500;
+}
+
+.total-amount {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .receipt-detail-container {
+    padding: 16px;
+  }
+  
+  .item-details {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

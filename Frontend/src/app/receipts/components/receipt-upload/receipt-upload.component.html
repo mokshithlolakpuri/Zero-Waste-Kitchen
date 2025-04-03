@@ -1,0 +1,55 @@
+<div class="upload-container">
+  <mat-card class="upload-card">
+    <mat-card-header>
+      <mat-card-title>Upload Receipt</mat-card-title>
+      <mat-card-subtitle>Upload an image of your grocery receipt</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="upload-area" (click)="fileInput.click()" [class.has-file]="!!previewImage">
+        <input 
+          #fileInput
+          type="file" 
+          accept="image/*" 
+          (change)="onFileSelected($event)"
+          style="display: none;">
+        
+        <div *ngIf="!previewImage" class="upload-prompt">
+          <mat-icon class="upload-icon">cloud_upload</mat-icon>
+          <p>Click to select a receipt image</p>
+          <p class="file-size-hint">Max file size: {{maxFileSizeMB}}MB</p>
+        </div>
+        
+        <div *ngIf="previewImage" class="file-preview">
+          <img [src]="previewImage" alt="Receipt preview" class="preview-image">
+        </div>
+      </div>
+      <div *ngIf="processing" class="processing-status">
+        <!-- Self-closing progress bar -->
+        <mat-progress-bar [value]="progress * 100" mode="determinate"/>
+        <p>{{ status }}</p>
+      </div>
+    </mat-card-content>
+    
+    <mat-card-actions align="end">
+      <button 
+        mat-button 
+        (click)="fileInput.click()"
+        [disabled]="processing">
+        Change File
+      </button>
+      
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="processReceipt()"
+        [disabled]="!selectedFile || processing">
+        <span *ngIf="!processing">Process Receipt</span>
+        <span *ngIf="processing">Processing...</span>
+      </button>
+    </mat-card-actions>
+    
+    <!-- Self-closing progress bar -->
+    <mat-progress-bar *ngIf="processing" mode="indeterminate"/>
+  </mat-card>
+</div>

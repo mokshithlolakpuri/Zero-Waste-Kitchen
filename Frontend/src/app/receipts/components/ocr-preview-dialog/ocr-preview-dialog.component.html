@@ -1,0 +1,132 @@
+<!-- ocr-preview-dialog.component.html -->
+<div class="ocr-dialog-container">
+  <h2 mat-dialog-title>Review Receipt Details</h2>
+  
+  <mat-dialog-content>
+    <div class="ocr-meta">
+      <span class="confidence" [style.color]="getConfidenceColor()">
+        OCR Confidence: {{ confidence | number:'1.0-0' }}%
+      </span>
+      <button mat-button (click)="showRawText = !showRawText">
+        <mat-icon>{{ showRawText ? 'visibility_off' : 'visibility' }}</mat-icon>
+        {{ showRawText ? 'Hide Raw Text' : 'Show Raw Text' }}
+      </button>
+      <button mat-button (click)="toggleImage()">
+        <mat-icon>{{ showImage ? 'visibility_off' : 'visibility' }}</mat-icon>
+        {{ showImage ? 'Hide Receipt Image' : 'Show Receipt Image' }}
+      </button>
+    </div>
+
+    <div *ngIf="showRawText" class="raw-text">
+      <pre>{{ data.ocrResult.rawText }}</pre>
+    </div>
+    
+    <div class="preview-container">
+      <div *ngIf="showImage" class="image-preview mat-elevation-z2">
+        <img [src]="data.image" alt="Receipt preview" class="receipt-image">
+      </div>
+      
+      <div class="details-preview">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Receipt Information</mat-card-title>
+            <mat-card-subtitle>Verify and edit extracted data</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Store Name</mat-label>
+                <input matInput [(ngModel)]="data.ocrResult.storeName" required>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Purchase Date</mat-label>
+                <input matInput [matDatepicker]="purchaseDatePicker" [(ngModel)]="data.ocrResult.purchaseDate" required>
+                <mat-datepicker-toggle matSuffix [for]="purchaseDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #purchaseDatePicker></mat-datepicker>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Total Amount</mat-label>
+                <input matInput type="number" [(ngModel)]="data.ocrResult.totalAmount" required>
+                <span matPrefix>$&nbsp;</span>
+              </mat-form-field>
+            </div>
+            
+            <mat-divider></mat-divider>
+            
+            <div class="items-header">
+              <h3>Items</h3>
+              <button mat-button color="primary" (click)="addItem()">
+                <mat-icon>add</mat-icon> Add Item
+              </button>
+            </div>
+            
+            <mat-list class="items-list">
+              <mat-list-item *ngFor="let item of editedItems; let i = index" class="item-row mat-elevation-z1">
+                <div class="item-controls">
+                  <mat-form-field appearance="outline" class="item-name">
+                    <mat-label>Name</mat-label>
+                    <input matInput [(ngModel)]="item.name" required>
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="item-quantity">
+                    <mat-label>Quantity</mat-label>
+                    <input matInput type="number" [(ngModel)]="item.quantity" min="1" required>
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="item-unit">
+                    <mat-label>Unit</mat-label>
+                    <mat-select [(ngModel)]="item.unit" required>
+                      <mat-option value="pcs">Pieces</mat-option>
+                      <mat-option value="kg">Kilograms</mat-option>
+                      <mat-option value="g">Grams</mat-option>
+                      <mat-option value="l">Liters</mat-option>
+                      <mat-option value="ml">Milliliters</mat-option>
+                      <mat-option value="pack">Pack</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="item-expiry">
+                    <mat-label>Expiry Date</mat-label>
+                    <input matInput [matDatepicker]="expiryDatePicker" [(ngModel)]="item.expiryDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="expiryDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #expiryDatePicker></mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="item-location">
+                    <mat-label>Storage</mat-label>
+                    <mat-select [(ngModel)]="item.storageLocation" required>
+                      <mat-option value="Fridge">Fridge</mat-option>
+                      <mat-option value="Pantry">Pantry</mat-option>
+                      <mat-option value="Freezer">Freezer</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  
+                  <button mat-icon-button color="warn" (click)="removeItem(i)" matTooltip="Remove item">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button 
+            color="primary" 
+            (click)="onSave()"
+            [disabled]="isUploading || !isFormValid()">
+      <mat-icon *ngIf="!isUploading">save</mat-icon>
+      <mat-icon *ngIf="isUploading">
+        <mat-spinner diameter="20"></mat-spinner>
+      </mat-icon>
+      {{ isUploading ? 'Saving...' : 'Save Receipt' }}
+    </button>
+  </mat-dialog-actions>
+</div>
