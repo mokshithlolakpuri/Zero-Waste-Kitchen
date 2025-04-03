@@ -1,0 +1,159 @@
+/* grocery-list.component.css */
+
+/* Container and Layout */
+.grocery-container {
+  max-width: 1400px;
+  margin: 24px auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Filter Card */
+.filter-card {
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.filter-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+  align-items: center;
+}
+
+.search-field {
+  grid-column: 1 / -1;
+}
+
+/* Grocery Grid */
+.grocery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.grocery-card {
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.grocery-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Content */
+.mat-card-header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.mat-card-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.mat-card-subtitle {
+  margin-top: 8px;
+}
+
+.mat-chip-list {
+  margin-top: 8px;
+}
+
+.mat-card-content p {
+  margin: 8px 0;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.mat-card-actions {
+  padding: 8px 16px !important;
+  margin: 0 !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Expired Items */
+.expired-card {
+  background-color: rgba(244, 67, 54, 0.05);
+  border-left: 4px solid #f44336;
+}
+
+.expired-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  font-size: 48px;
+  font-weight: bold;
+  color: rgba(244, 67, 54, 0.1);
+  pointer-events: none;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+/* Empty and Loading States */
+.empty-card, .error-card {
+  text-align: center;
+  padding: 32px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: rgba(0, 0, 0, 0.2);
+  margin-bottom: 16px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px;
+  gap: 16px;
+}
+
+/* Paginator */
+.mat-paginator {
+  background: transparent;
+  margin-top: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .filter-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .grocery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .grocery-container {
+    padding: 0 8px;
+  }
+
+  .mat-card {
+    border-radius: 8px !important;
+  }
+}

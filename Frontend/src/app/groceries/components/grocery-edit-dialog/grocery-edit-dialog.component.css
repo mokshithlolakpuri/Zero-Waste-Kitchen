@@ -1,0 +1,34 @@
+.form-row {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .quantity-field {
+    flex: 1;
+  }
+  
+  .unit-field {
+    width: 150px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .error-message {
+    color: #f44336;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    background-color: #ffebee;
+    border-radius: 4px;
+  }
+  
+  button[mat-raised-button] {
+    margin-left: 8px;
+  }
+  
+  .mat-mdc-dialog-actions {
+    justify-content: flex-end;
+    padding: 16px 24px;
+  }

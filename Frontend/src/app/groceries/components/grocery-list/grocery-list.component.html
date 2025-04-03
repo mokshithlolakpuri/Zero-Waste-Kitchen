@@ -1,0 +1,134 @@
+<div class="grocery-container">
+  <mat-card class="filter-card">
+    <div class="filter-header">
+      <h2>My Groceries</h2>
+      <button mat-raised-button color="primary" (click)="openAddDialog()">
+        <mat-icon>add</mat-icon> Add New
+      </button>
+    </div>
+
+    <div class="filter-controls">
+      <!-- Search Input -->
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search groceries</mat-label>
+        <input matInput 
+               [(ngModel)]="searchTerm"
+               (ngModelChange)="applyFilters()"
+               placeholder="Search by name">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Expiry Filter -->
+      <mat-form-field appearance="outline">
+        <mat-label>Expires Within</mat-label>
+        <mat-select [(ngModel)]="expiryFilter" (ngModelChange)="applyFilters()">
+          <mat-option [value]="null">All Items</mat-option>
+          <mat-option value="3">3 Days</mat-option>
+          <mat-option value="7">7 Days</mat-option>
+          <mat-option value="14">14 Days</mat-option>
+          <mat-option value="30">30 Days</mat-option>
+          <mat-option value="expired">Expired</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Storage Location Filter -->
+      <mat-form-field appearance="outline" *ngIf="storageLocations.length > 0">
+        <mat-label>Storage Location</mat-label>
+        <mat-select [(ngModel)]="storageLocationFilter" (ngModelChange)="applyFilters()">
+          <mat-option [value]="null">All Locations</mat-option>
+          <mat-option *ngFor="let location of storageLocations" [value]="location">
+            {{ location }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-stroked-button (click)="clearFilters()">
+        <mat-icon>clear_all</mat-icon> Clear Filters
+      </button>
+    </div>
+  </mat-card>
+
+  <!-- Error Message -->
+  <mat-card *ngIf="error" class="error-card">
+    <mat-card-content>
+      {{ error }}
+      <button mat-button color="primary" (click)="loadGroceries()">Retry</button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading your groceries...</p>
+  </div>
+
+  <!-- Empty State -->
+  <mat-card *ngIf="!loading && filteredGroceries.length === 0" class="empty-card">
+    <mat-card-content>
+      <mat-icon class="empty-icon">shopping_basket</mat-icon>
+      <h3>No groceries found</h3>
+      <p *ngIf="searchTerm || expiryFilter || storageLocationFilter">
+        No results match your filters
+      </p>
+      <p *ngIf="!(searchTerm || expiryFilter || storageLocationFilter)">
+        You haven't added any groceries yet
+      </p>
+      <button mat-raised-button color="primary" (click)="openAddDialog()">
+        <mat-icon>add</mat-icon> Add Your First Item
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Grocery Grid -->
+  <div class="grocery-grid">
+    <mat-card *ngFor="let grocery of getPaginatedItems()" 
+              class="grocery-card"
+              [class.expired-card]="isExpired(grocery.expiry_date)">
+      <mat-card-header>
+        <mat-card-title>{{ grocery.name }}</mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip-listbox >
+            <mat-chip>{{ grocery.storageLocation }}</mat-chip>
+            <mat-chip *ngIf="grocery.expiry_date" 
+                     [color]="isExpired(grocery.expiry_date) ? 'warn' : 'primary'"
+                     selected>
+              {{ grocery.expiry_date | date:'shortDate' }}
+            </mat-chip>
+          </mat-chip-listbox >
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p><strong>Quantity:</strong> {{ grocery.quantity }} {{ grocery.unit }}</p>
+        <p *ngIf="grocery.description">{{ grocery.description }}</p>
+      </mat-card-content>
+
+      <!-- Expired Watermark -->
+      <div *ngIf="isExpired(grocery.expiry_date)" class="expired-watermark">
+        EXPIRED
+      </div>
+
+      <mat-card-actions align="end">
+        <button mat-icon-button [routerLink]="['/groceries', grocery.id]" matTooltip="Details">
+          <mat-icon>info</mat-icon>
+        </button>
+        <button mat-icon-button (click)="openEditDialog(grocery)" matTooltip="Edit">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteGrocery(grocery.id)" matTooltip="Delete">
+          <mat-icon color="warn">delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Pagination -->
+  <mat-paginator *ngIf="filteredGroceries.length > 0"
+                 [length]="filteredGroceries.length"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 [pageIndex]="pageIndex"
+                 (page)="onPageChange($event)"
+                 aria-label="Select page">
+  </mat-paginator>
+</div>

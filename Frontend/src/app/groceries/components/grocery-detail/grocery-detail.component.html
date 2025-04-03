@@ -1,0 +1,15 @@
+<div class="detail-container">
+  <button mat-button (click)="router.navigate(['/groceries'])">← Back to List</button>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div *ngIf="grocery && !loading">
+    <h1>{{ grocery.name }}</h1>
+    <p><strong>Quantity:</strong> {{ grocery.quantity }} {{ grocery.unit }}</p>
+    <p><strong>Expiry Date:</strong> {{ grocery.expiry_date | date }}</p>
+    <p><strong>Storage Location:</strong> {{ grocery.storage_location }}</p>
+    <button mat-raised-button color="warn" (click)="deleteGrocery()">Delete</button>
+  </div>
+</div>
