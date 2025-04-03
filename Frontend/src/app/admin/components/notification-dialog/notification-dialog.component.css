@@ -1,0 +1,29 @@
+/* notification-dialog.component.css */
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-content {
+  padding: 16px 24px;
+  min-width: 400px;
+}
+
+mat-dialog-actions {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Mobile styles */
+@media (max-width: 600px) {
+  mat-dialog-content {
+    min-width: auto;
+    padding: 16px;
+  }
+
+  mat-dialog-actions {
+    padding: 16px;
+  }
+}

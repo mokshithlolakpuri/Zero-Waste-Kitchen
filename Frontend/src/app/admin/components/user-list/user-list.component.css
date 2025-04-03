@@ -1,0 +1,56 @@
+/* user-list.component.css */
+.user-list-card {
+  margin: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-list-card .mat-card-header {
+  background-color: #e8eaf6; /* indigo-50 */
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.user-list-card .mat-card-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.user-list-card .mat-card-content {
+  padding: 0;
+}
+
+.user-list-card .table-container {
+  overflow-x: auto;
+  min-height: 300px;
+}
+
+.user-list-card table {
+  width: 100%;
+}
+
+.user-list-card .mat-row:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.user-list-card .button-text {
+  margin-left: 8px;
+}
+
+/* Mobile styles */
+@media (max-width: 600px) {
+  .user-list-card {
+    margin: 8px;
+  }
+  
+  .user-list-card .button-text {
+    display: none;
+  }
+  
+  .user-list-card .mat-cell, 
+  .user-list-card .mat-header-cell {
+    padding: 8px;
+  }
+}
