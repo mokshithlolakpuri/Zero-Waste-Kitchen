@@ -1,0 +1,34 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h1>Login</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email"
+          placeholder="Enter your email">
+        <div *ngIf="email?.invalid && email?.touched" class="error-message">
+          Please enter a valid email
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password"
+          placeholder="Enter your password">
+        <div *ngIf="password?.invalid && password?.touched" class="error-message">
+          Password is required
+        </div>
+      </div>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <button type="submit" [disabled]="loginForm.invalid" class="btn-primary">Login</button>
+    </form>
+    <p class="auth-link">Don't have an account? <a routerLink="/auth/register">Register</a></p>
+  </div>
+</div>
