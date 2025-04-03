@@ -1,0 +1,43 @@
+<header class="header">
+  <div class="container">
+    <a routerLink="/" class="logo">Zero Waste</a>
+
+    <nav class="nav" [class.active]="isMenuOpen">
+      <ul class="nav-list">
+        <li *ngIf="authService.isAuthenticated()">
+          <a routerLink="/groceries" routerLinkActive="active">Groceries</a>
+        </li>
+        <li *ngIf="authService.isAuthenticated()">
+          <a routerLink="/receipts" routerLinkActive="active">Receipts</a>
+        </li>
+        <li *ngIf="authService.isAuthenticated()">
+          <a routerLink="/recipes" routerLinkActive="active">Recipes</a>
+        </li>
+        <li *ngIf="isAdmin">
+          <a routerLink="/admin" routerLinkActive="active">Admin</a>
+        </li>
+        <li *ngIf="authService.isAuthenticated()">
+          <button class="logout-btn" (click)="logout()">Logout</button>
+        </li>
+        <li *ngIf="!authService.isAuthenticated()">
+          <a routerLink="/auth/login" routerLinkActive="active">Login</a>
+        </li>
+        <li *ngIf="!authService.isAuthenticated()">
+          <a routerLink="/auth/register" routerLinkActive="active">Register</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="notification-toggle" *ngIf="authService.isAuthenticated()">
+      <button mat-icon-button (click)="toggleNotifications()">
+        <mat-icon>{{ (notificationsEnabled$ | async) ? 'notifications_active' : 'notifications_off' }}</mat-icon>
+      </button>
+    </div>
+
+    <button class="menu-toggle" (click)="toggleMenu()">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+</header>
